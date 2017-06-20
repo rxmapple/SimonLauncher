@@ -63,6 +63,7 @@ import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.NoLocaleSqliteContext;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.Thunk;
+import com.simon.ext.LogUtils;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -74,7 +75,7 @@ import java.util.HashSet;
 
 public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
-    private static final boolean LOGD = false;
+    private static final boolean LOGD = LogUtils.DEBUG;
 
     /**
      * Represents the schema of the database. Changes in scheme need not be backwards compatible.

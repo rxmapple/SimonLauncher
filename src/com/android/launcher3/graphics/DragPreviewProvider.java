@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppWidgetHostView;
 import com.android.launcher3.R;
@@ -66,12 +67,19 @@ public class DragPreviewProvider {
         }
     }
 
+    private static boolean isOriginalIconView(View v) {
+        if (v instanceof TextView) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Draws the {@link #mView} into the given {@param destCanvas}.
      */
     private void drawDragView(Canvas destCanvas) {
         destCanvas.save();
-        if (mView instanceof TextView) {
+        if (isOriginalIconView(mView)) {
             Drawable d = Workspace.getTextViewIcon((TextView) mView);
             Rect bounds = getDrawableBounds(d);
             destCanvas.translate(blurSizeOutline / 2 - bounds.left,
@@ -90,6 +98,14 @@ public class DragPreviewProvider {
                     textVisible = true;
                 }
             }
+
+            if (mView instanceof BubbleTextView) {
+                if (((BubbleTextView) mView).isTextVisible()) {
+                    ((BubbleTextView) mView).setTextVisibility(false);
+                    textVisible = true;
+                }
+            }
+
             destCanvas.translate(-mView.getScrollX() + blurSizeOutline / 2,
                     -mView.getScrollY() + blurSizeOutline / 2);
             destCanvas.clipRect(clipRect, Op.REPLACE);
@@ -97,7 +113,13 @@ public class DragPreviewProvider {
 
             // Restore text visibility of FolderIcon if necessary
             if (textVisible) {
-                ((FolderIcon) mView).setTextVisible(true);
+                if (mView instanceof FolderIcon) {
+                    ((FolderIcon) mView).setTextVisible(true);
+                }
+
+                if (mView instanceof BubbleTextView) {
+                    ((BubbleTextView) mView).setTextVisibility(true);
+                }
             }
         }
         destCanvas.restore();
@@ -112,7 +134,7 @@ public class DragPreviewProvider {
         int width = mView.getWidth();
         int height = mView.getHeight();
 
-        if (mView instanceof TextView) {
+        if (isOriginalIconView(mView)) {
             Drawable d = Workspace.getTextViewIcon((TextView) mView);
             Rect bounds = getDrawableBounds(d);
             width = bounds.width();
