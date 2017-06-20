@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         mavenCentral()
         jcenter()
     }
@@ -21,7 +22,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        flavorDimensions "aosp"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -32,6 +33,7 @@ android {
 
     productFlavors {
         aosp {
+            dimension "aosp"
             applicationId 'com.android.launcher3'
             testApplicationId 'com.android.launcher3.tests'
         }
@@ -58,14 +60,19 @@ android {
             manifest.srcFile "tests/AndroidManifest.xml"
         }
     }
+    lintOptions {
+        disable 'MissingTranslation'
+        checkReleaseBuilds false
+    }
 }
 
 repositories {
+    maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     mavenCentral()
     jcenter()
 }
 
-final String SUPPORT_LIBS_VERSION = '26.0.0-SNAPSHOT'
+final String SUPPORT_LIBS_VERSION = '26.0.0-alpha1'
 dependencies {
     compile "com.android.support:support-v4:${SUPPORT_LIBS_VERSION}"
     compile "com.android.support:recyclerview-v7:${SUPPORT_LIBS_VERSION}"
@@ -92,6 +99,7 @@ protobuf {
                     remove java
                     javanano {
                         option "java_package=launcher_log.proto|com.android.launcher3.userevent.nano"
+                        option "java_package=launcher_dump.proto|com.android.launcher3.model.nano"
                         option "enum_style=java"
                     }
                 }
