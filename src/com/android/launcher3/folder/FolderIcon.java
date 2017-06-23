@@ -1179,19 +1179,4 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         boolean clipToBackground();
         List<View> getItemsToDisplay(Folder folder);
     }
-
-    public Rect getIconRect() {
-        DeviceProfile grid = mLauncher.getDeviceProfile();
-        int iconSize = grid.folderIconSizePx;
-
-        Point center = new Point(getScrollX() + (getWidth() >> 1),
-                getScrollY() + getPaddingTop() + (iconSize >> 1));
-        Rect iconRect = new Rect();
-
-        iconRect.left   = center.x - (iconSize >> 1);
-        iconRect.top    = center.y - (iconSize >> 1);
-        iconRect.right  = iconRect.left + iconSize;
-        iconRect.bottom = iconRect.top + iconSize;
-        return iconRect;
-    }
 }

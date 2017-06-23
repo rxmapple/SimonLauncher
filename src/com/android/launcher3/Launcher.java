@@ -131,7 +131,6 @@ import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.simon.ext.LogUtils;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -150,11 +149,11 @@ public class Launcher extends BaseActivity
                    LauncherModel.Callbacks, View.OnTouchListener, LauncherProviderChangeListener,
                    AccessibilityManager.AccessibilityStateChangeListener {
     public static final String TAG = "Launcher";
-    static final boolean LOGD = LogUtils.DEBUG;
+    static final boolean LOGD = false;
 
-    static final boolean DEBUG_WIDGETS = LogUtils.DEBUG_WIDGET;
+    static final boolean DEBUG_WIDGETS = false;
     static final boolean DEBUG_STRICT_MODE = false;
-    static final boolean DEBUG_RESUME_TIME = LogUtils.DEBUG_RESUME_TIME;
+    static final boolean DEBUG_RESUME_TIME = false;
 
     private static final int REQUEST_CREATE_SHORTCUT = 1;
     private static final int REQUEST_CREATE_APPWIDGET = 5;

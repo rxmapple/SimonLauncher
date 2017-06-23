@@ -29,7 +29,6 @@ import android.provider.Settings.System;
 import android.support.v4.os.BuildCompat;
 
 import com.android.launcher3.graphics.IconShapeOverride;
-import com.simon.ext.LauncherSettingsExtension;
 
 /**
  * Settings activity for Launcher. Currently implements the following setting: Allow rotation
@@ -107,15 +106,10 @@ public class SettingsActivity extends Activity {
                     getPreferenceScreen().removePreference(iconShapeOverride);
                 }
             }
-
-            LauncherSettingsExtension.getInstance()
-                    .initAndAddPreferences(getActivity(), getPreferenceScreen());
         }
 
         @Override
         public void onDestroy() {
-            LauncherSettingsExtension.getInstance().removePreferences(getPreferenceScreen());
-
             if (mRotationLockObserver != null) {
                 getActivity().getContentResolver().unregisterContentObserver(mRotationLockObserver);
                 mRotationLockObserver = null;

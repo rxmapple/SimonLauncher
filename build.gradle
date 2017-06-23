@@ -34,7 +34,7 @@ android {
     productFlavors {
         aosp {
             dimension "aosp"
-            applicationId 'com.simon.launcher'
+            applicationId 'com.android.launcher3'
             testApplicationId 'com.android.launcher3.tests'
         }
     }
@@ -78,14 +78,14 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${SUPPORT_LIBS_VERSION}"
     compile "com.android.support:palette-v7:${SUPPORT_LIBS_VERSION}"
     compile 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-2'
+
     testCompile 'junit:junit:4.12'
-    androidTestCompile 'org.mockito:mockito-core:1.+'
+    androidTestCompile "org.mockito:mockito-core:1.+"
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile "com.android.support:support-annotations:${SUPPORT_LIBS_VERSION}"
-    compile project(':ext')
 }
 
 protobuf {

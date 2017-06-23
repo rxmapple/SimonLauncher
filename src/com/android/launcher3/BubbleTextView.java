@@ -93,7 +93,6 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver {
     private final int mIconSize;
     @ViewDebug.ExportedProperty(category = "launcher")
     private int mTextColor;
-    private boolean mIsTextVisible;
 
     private BadgeInfo mBadgeInfo;
     private BadgeRenderer mBadgeRenderer;
@@ -531,11 +530,6 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver {
         } else {
             super.setTextColor(res.getColor(android.R.color.transparent));
         }
-        mIsTextVisible = visible;
-    }
-
-    public boolean isTextVisible() {
-        return mIsTextVisible;
     }
 
     @Override
@@ -670,18 +664,5 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver {
      */
     public interface BubbleTextShadowHandler {
         void setPressedIcon(BubbleTextView icon, Bitmap background);
-    }
-
-    public Rect getIconRect() {
-        int iconSize = mIconSize;
-        Point center = new Point(getScrollX() + (getWidth() >> 1),
-                getScrollY() + getPaddingTop() + (iconSize >> 1));
-        Rect iconRect = new Rect();
-
-        iconRect.left   = center.x - (iconSize >> 1);
-        iconRect.top    = center.y - (iconSize >> 1);
-        iconRect.right  = iconRect.left + iconSize;
-        iconRect.bottom = iconRect.top + iconSize;
-        return iconRect;
     }
 }

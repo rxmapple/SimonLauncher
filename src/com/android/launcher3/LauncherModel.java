@@ -80,7 +80,6 @@ import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.Provider;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.ViewOnDrawExecutor;
-import com.simon.ext.LogUtils;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -104,8 +103,8 @@ import java.util.concurrent.Executor;
  */
 public class LauncherModel extends BroadcastReceiver
         implements LauncherAppsCompat.OnAppsChangedCallbackCompat {
-    static final boolean DEBUG_LOADERS = LogUtils.DEBUG_LOADER;;
-    private static final boolean DEBUG_RECEIVER = LogUtils.DEBUG_RECEIVER;
+    static final boolean DEBUG_LOADERS = false;
+    private static final boolean DEBUG_RECEIVER = false;
 
     static final String TAG = "Launcher.Model";
 

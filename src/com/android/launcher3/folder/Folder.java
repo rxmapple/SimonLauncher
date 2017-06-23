@@ -61,7 +61,6 @@ import com.android.launcher3.LogDecelerateInterpolator;
 import com.android.launcher3.OnAlarmListener;
 import com.android.launcher3.PagedView;
 import com.android.launcher3.R;
-import com.android.launcher3.ShortcutAndWidgetContainer;
 import com.android.launcher3.ShortcutInfo;
 import com.android.launcher3.UninstallDropTarget.DropTargetSource;
 import com.android.launcher3.Utilities;
@@ -1543,21 +1542,5 @@ public class Folder extends AbstractFloatingView implements DragSource, View.OnC
     @Override
     public int getLogContainerType() {
         return ContainerType.FOLDER;
-    }
-
-    /**
-     * We should only use this to search for specific children.  Do not use this method to modify
-     * ShortcutsAndWidgetsContainer directly. Includes ShortcutAndWidgetContainers from
-     * the hotseat and workspace pages
-     */
-    public ArrayList<ShortcutAndWidgetContainer> getAllShortcutContainersInFolder() {
-        ArrayList<ShortcutAndWidgetContainer> childrenLayouts =
-                new ArrayList<ShortcutAndWidgetContainer>();
-        int screenCount = mContent.getChildCount();
-        for (int screen = 0; screen < screenCount; screen++) {
-            childrenLayouts.add(
-                    ((CellLayout) (mContent.getChildAt(screen))).getShortcutsAndWidgets());
-        }
-        return childrenLayouts;
     }
 }
