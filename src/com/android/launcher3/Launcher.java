@@ -131,6 +131,7 @@ import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
+import com.simon.ext.LauncherExtCallbacks;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -354,6 +355,8 @@ public class Launcher extends BaseActivity
         if (LauncherAppState.PROFILE_STARTUP) {
             Trace.beginSection("Launcher-onCreate");
         }
+
+        setLauncherCallbacks(new LauncherExtCallbacks(this));
 
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.preOnCreate();

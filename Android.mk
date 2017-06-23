@@ -30,11 +30,13 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, src) \
+    $(call all-java-files-under, ext/src) \
     $(call all-java-files-under, src_config) \
     $(call all-proto-files-under, protos)
 
 LOCAL_RESOURCE_DIR := \
     $(LOCAL_PATH)/res \
+    $(LOCAL_PATH)/ext/res \
     prebuilts/sdk/current/support/v7/recyclerview/res \
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
