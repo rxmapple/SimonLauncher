@@ -23,6 +23,9 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.util.Log;
 
+import com.simon.ext.LauncherAppMonitor;
+
+
 /**
  * {@link BroadcastReceiver} which watches configuration changes and
  * restarts the process in case changes which affect the device profile occur.
@@ -43,6 +46,7 @@ public class ConfigMonitor extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        LauncherAppMonitor.getInstance(mContext).onAppConfigChanged();
         Configuration config = context.getResources().getConfiguration();
         if (mFontScale != config.fontScale || mDensity != config.densityDpi) {
             Log.d("ConfigMonitor", "Configuration changed, restarting launcher");

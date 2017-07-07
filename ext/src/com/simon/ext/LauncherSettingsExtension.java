@@ -12,55 +12,45 @@ import java.util.ArrayList;
 
 public class LauncherSettingsExtension {
 
-    private static final String TAG = "SettingsExtensionPreference";
+    private static final String TAG = "LauncherSettingsExtension";
 
-    private static final boolean DEBUG = LogUtils.DEBUG;
+    private static final boolean DEBUG = false;
 
-    private static LauncherSettingsExtension INSTANCE;
+    private final ArrayList<Preference> mPreferences = new ArrayList<Preference>();
 
-    private final ArrayList<Preference>
-            mPreferences = new ArrayList<Preference>();
-
-    private LauncherSettingsExtension() {}
-
-    public static LauncherSettingsExtension getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new LauncherSettingsExtension();
-        }
-        return INSTANCE;
-    }
-
-    private void remove(Preference pref) {
-        if (DEBUG) {
-            LogUtils.d(TAG, "*** remove preference for " + pref);
-        }
-        while (mPreferences.contains(pref)) {
-            mPreferences.remove(pref);
-        }
-    }
-
-    private void add(Preference pref) {
-        if (DEBUG) {
-            LogUtils.d(TAG, "*** add preference for " + pref);
-        }
-        if (pref != null && !mPreferences.contains(pref)) {
-            mPreferences.add(pref);
-        }
+    public LauncherSettingsExtension(Context context) {
+        initPreferences(context);
     }
 
     private void initPreferences(Context context) {
         // init preferences for all features and add them to the specific arrayList.
 
-        if (DEBUG) {
-            LogUtils.d(TAG, "initPreferences: mPreferences " + mPreferences);
+        if (DEBUG) LogUtils.d(TAG, "initPreferences: mPreferences " + mPreferences);
+    }
+
+    private void add(Preference pref) {
+        if (DEBUG) LogUtils.d(TAG, "*** add preference for " + pref);
+
+        if (pref != null) {
+            String key = pref.getKey();
+            if (key == null) {
+                throw new RuntimeException();
+            }
+
+            for (Preference preference : mPreferences) {
+                if (key.equals(preference.getKey())) {
+                    mPreferences.remove(preference);
+                }
+            }
+            if (pref.getOrder() != Preference.DEFAULT_ORDER) {
+                pref.setOrder(Preference.DEFAULT_ORDER);
+            }
+            mPreferences.add(pref);
         }
     }
 
-    public void initAndAddPreferences(Context context, PreferenceScreen preferenceScreen) {
-        initPreferences(context);
-
-        for (int i = 0; i < mPreferences.size(); i++) {
-            Preference pref = mPreferences.get(i);
+    public void addPreferences(PreferenceScreen preferenceScreen) {
+        for (Preference pref : mPreferences) {
             if (pref != null) {
                 preferenceScreen.addPreference(pref);
             }
@@ -68,12 +58,11 @@ public class LauncherSettingsExtension {
     }
 
     public void removePreferences(PreferenceScreen preferenceScreen) {
-        for (int i = 0; i < mPreferences.size(); i++) {
-            Preference pref = mPreferences.get(i);
+        for (Preference pref : mPreferences) {
             if (pref != null) {
                 preferenceScreen.removePreference(pref);
-                remove(pref);
             }
         }
+        mPreferences.clear();
     }
 }

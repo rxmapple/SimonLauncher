@@ -131,7 +131,9 @@ import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.simon.ext.LauncherExtCallbacks;
+
+import com.simon.ext.LauncherAppMonitor;
+import com.simon.ext.LogUtils;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -335,6 +337,7 @@ public class Launcher extends BaseActivity
     }
 
     private RotationPrefChangeHandler mRotationPrefChangeHandler;
+    private LauncherAppMonitor mAppMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -355,8 +358,8 @@ public class Launcher extends BaseActivity
         if (LauncherAppState.PROFILE_STARTUP) {
             Trace.beginSection("Launcher-onCreate");
         }
-
-        setLauncherCallbacks(new LauncherExtCallbacks(this));
+        mAppMonitor = LauncherAppMonitor.getInstance(this);
+        mAppMonitor.onLauncherPreCreate(this);
 
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.preOnCreate();
@@ -459,6 +462,7 @@ public class Launcher extends BaseActivity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onCreate(savedInstanceState);
         }
+        mAppMonitor.onLauncherCreated();
     }
 
     @Override
@@ -845,6 +849,7 @@ public class Launcher extends BaseActivity
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
             int[] grantResults) {
         PendingRequestArgs pendingArgs = mPendingRequestArgs;
+        mAppMonitor.onLauncherRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSION_CALL_PHONE && pendingArgs != null
                 && pendingArgs.getRequestCode() == REQUEST_PERMISSION_CALL_PHONE) {
             setWaitingForResult(null);
@@ -937,6 +942,7 @@ public class Launcher extends BaseActivity
         }
 
         NotificationListener.removeNotificationsChangedListener();
+        mAppMonitor.onLauncherStop();
     }
 
     @Override
@@ -944,6 +950,7 @@ public class Launcher extends BaseActivity
         super.onStart();
         FirstFrameAnimatorHelper.setIsVisible(true);
 
+        mAppMonitor.onLauncherStart();
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onStart();
         }
@@ -965,6 +972,7 @@ public class Launcher extends BaseActivity
             Log.v(TAG, "Launcher.onResume()");
         }
 
+        mAppMonitor.onLauncherPreResume();
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.preOnResume();
         }
@@ -1069,14 +1077,14 @@ public class Launcher extends BaseActivity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onResume();
         }
-
+        mAppMonitor.onLauncherResumed();
     }
 
     @Override
     protected void onPause() {
         // Ensure that items added to Launcher are queued until Launcher returns
         InstallShortcutReceiver.enableInstallQueue();
-
+        mAppMonitor.onLauncherPrePause();
         super.onPause();
         mPaused = true;
         mDragController.cancelDrag();
@@ -1091,6 +1099,7 @@ public class Launcher extends BaseActivity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onPause();
         }
+        mAppMonitor.onLauncherPaused();
     }
 
     public interface CustomContentCallbacks {
@@ -1199,6 +1208,7 @@ public class Launcher extends BaseActivity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onWindowFocusChanged(hasFocus);
         }
+        mAppMonitor.onLauncherFocusChanged(hasFocus);
     }
 
     private boolean acceptFilter() {
@@ -1725,6 +1735,7 @@ public class Launcher extends BaseActivity
 
         boolean isActionMain = Intent.ACTION_MAIN.equals(intent.getAction());
         if (isActionMain) {
+            mAppMonitor.onReceiveHomeIntent();
             if (mWorkspace == null) {
                 // Can be cases where mWorkspace is null, this prevents a NPE
                 return;
@@ -1886,6 +1897,7 @@ public class Launcher extends BaseActivity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onDestroy();
         }
+        mAppMonitor.onLauncherDestroy();
     }
 
     public LauncherAccessibilityDelegate getAccessibilityDelegate() {

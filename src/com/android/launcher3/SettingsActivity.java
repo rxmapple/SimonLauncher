@@ -57,6 +57,7 @@ public class SettingsActivity extends Activity {
 
         private SystemDisplayRotationLockObserver mRotationLockObserver;
         private IconBadgingObserver mIconBadgingObserver;
+        private LauncherSettingsExtension mSettingsExtension;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -108,13 +109,13 @@ public class SettingsActivity extends Activity {
                 }
             }
 
-            LauncherSettingsExtension.getInstance()
-                    .initAndAddPreferences(getActivity(), getPreferenceScreen());
+            mSettingsExtension = new LauncherSettingsExtension(getActivity());
+            mSettingsExtension.addPreferences(getPreferenceScreen());
         }
 
         @Override
         public void onDestroy() {
-            LauncherSettingsExtension.getInstance().removePreferences(getPreferenceScreen());
+            mSettingsExtension.removePreferences(getPreferenceScreen());
 
             if (mRotationLockObserver != null) {
                 getActivity().getContentResolver().unregisterContentObserver(mRotationLockObserver);

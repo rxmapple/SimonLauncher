@@ -80,6 +80,7 @@ import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.Provider;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.ViewOnDrawExecutor;
+import com.simon.ext.LauncherAppMonitor;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -484,6 +485,8 @@ public class LauncherModel extends BroadcastReceiver
         } else if (Intent.ACTION_WALLPAPER_CHANGED.equals(action)) {
             ExtractionUtils.startColorExtractionServiceIfNecessary(context);
         }
+
+        LauncherAppMonitor.getInstance(context).onModelReceive(intent);
     }
 
     /**
